@@ -17,6 +17,19 @@ Since it is a hash index, make sure that the key is as unique as possible to avo
    String orderId = "20034568923546";   
    message.setKeys(orderId);   
 ```
+If you have multiple keys for a message, please concatenate them with 'KEY_SEPARATOR' char, as shown below:
+```java
+   // order id 
+   String orderId = "20034568923546";
+   String otherKey = "19101121210831";
+   String keys = new StringBuilder(orderId)
+           .append(org.apache.rocketmq.common.message.MessageConst.KEY_SEPARATOR)
+           .append(otherKey).toString();
+   message.setKeys(keys);
+```
+And if you want to query the message, please use `orderId` and `otherKey` to query respectively instead of `keys`, 
+because the server will unwrap `keys` with `KEY_SEPARATOR` and create corresponding index.
+In the above example, the server will create two indexes, one for `orderId` and one for `otherKey`.
 #### 3 Log print
 Print the message log when send success or failed, make sure to print the SendResult and key fields. 
 Send messages is successful as long as it does not throw exception. Send successful will have multiple states defined in sendResult.
@@ -30,7 +43,7 @@ To make sure nothing lost, you should also enable the SYNC_MASTER or SYNC_FLUSH.
 - **FLUSH_DISK_TIMEOUT**
 
 Message send successfully, but the server flush messages to disk timeout.At this point, the message has entered the server's memory, and the message will be lost only when the server is down.
-Flush mode and sync flush time interval can be set in the configuration parameters. It will return FLUSH_DISK_TIMEOUT when Broker server doesn't finish flush message to disk in timout(default is 5s
+Flush mode and sync flush time interval can be set in the configuration parameters. It will return FLUSH_DISK_TIMEOUT when Broker server doesn't finish flush message to disk in timeout(default is 5s
 ) when sets FlushDiskType=SYNC_FLUSH(default is async flush).
 
 - **FLUSH_SLAVE_TIMEOUT**
@@ -59,7 +72,7 @@ Thirdly, the producer is a virtual machine with low reliability, which is not su
 In conclusion, it is recommended that the retry process must be controlled by the application.
 
 ### 1.3 Send message by oneway
-Typically, this is the process by which messages are sent：
+Typically, this is the process by which messages are sent:
 
 - Client send request to server
 - Server process request
