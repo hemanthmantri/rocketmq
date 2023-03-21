@@ -133,7 +133,7 @@ public class MQClientAPIImplTest {
 
     @Test
     public void testSendMessageOneWay_WithException() throws RemotingException, InterruptedException, MQBrokerException {
-        doThrow(new RemotingTimeoutException("Remoting Exception in Test")).when(remotingClient).invokeOneway(anyString(), any(RemotingCommand.class), anyLong());
+        doThrow(new RemotingTimeoutException("Remoting Exceptions in Test")).when(remotingClient).invokeOneway(anyString(), any(RemotingCommand.class), anyLong());
         try {
             mqClientAPI.sendMessage(brokerAddr, brokerName, msg, new SendMessageRequestHeader(),
                 3 * 1000, CommunicationMode.ONEWAY, new SendMessageContext(), defaultMQProducerImpl);
