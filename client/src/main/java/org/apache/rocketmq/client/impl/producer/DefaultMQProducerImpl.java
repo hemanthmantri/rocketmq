@@ -704,7 +704,7 @@ public class DefaultMQProducerImpl implements MQProducerInner {
                 return sendResult;
             }
 
-            String info = String.format("Send [%d] times, still failed, cost [%d]ms, Topic: %s, BrokersSent: %s",
+            String info = String.format("Send [%d] times, still failed, cost [%d]ms, Topic : %s, BrokersSent: %s",
                 times,
                 System.currentTimeMillis() - beginTimestampFirst,
                 msg.getTopic(),
