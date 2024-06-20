@@ -69,7 +69,7 @@ public class ValidatorsTest {
             Validators.checkTopic(blankTopic);
             failBecauseExceptionWasNotThrown(MQClientException.class);
         } catch (MQClientException e) {
-            assertThat(e).hasMessageStartingWith("The specified topic is blank");
+            assertThat(e).hasMessageStartingWith("The specified topic is blank!");
         }
     }
 
